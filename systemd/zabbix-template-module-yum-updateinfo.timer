@@ -1,0 +1,10 @@
+[Unit]
+Description=Send YUM updateinfo to Zabbix
+Requires=zabbix-template-module-yum-updateinfo.service
+
+[Timer]
+Unit=zabbix-template-module-yum-updateinfo.service
+OnCalendar=*-*-* *:00:00
+
+[Install]
+WantedBy=timers.target

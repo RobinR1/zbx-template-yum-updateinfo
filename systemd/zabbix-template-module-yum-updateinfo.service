@@ -1,0 +1,10 @@
+[Unit]
+Description=Send YUM updateinfo to Zabbix
+Wants=zabbix-template-module-yum-updateinfo.timer
+
+[Service]
+Type=oneshot
+ExecStart=/etc/zabbix/scripts/yum-updateinfo.sh
+
+[Install]
+WantedBy=multi-user.target

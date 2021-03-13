@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.0</version>
+    <date>2021-03-13T20:49:18Z</date>
+    <groups>
+        <group>
+            <name>Templates/Modules</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template Module YUM updateinfo by Zabbix trapper</template>
+            <name>Template Module YUM updateinfo by Zabbix trapper</name>
+            <description>Retrieve information about available updates and security fixes (if supported; CentOS does not provide security errata in their repositories).
+
+Requires yum-updateinfo.sh script to be run periodically on host to send the item data to Zabbix.
+
+Created by Robin Roevens (robin.roevens (at) disroot.org)</description>
+            <groups>
+                <group>
+                    <name>Templates/Modules</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Available updates</name>
+                </application>
+                <application>
+                    <name>Security</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>Available bugfix updates</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.bugfixes</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <description>Number of available and not yet installed bugfix updates in enabled repositories</description>
+                    <applications>
+                        <application>
+                            <name>Available updates</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>New bugfixes are available</name>
+                            <priority>INFO</priority>
+                            <description>One or more bugfix updates are available for the system.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Available enhancement updates</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.enhancement</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <description>Number of available and not yet installed enhancement updates in enabled repositories</description>
+                    <applications>
+                        <application>
+                            <name>Available updates</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>New enhancement updates are available</name>
+                            <priority>INFO</priority>
+                            <description>One or more enhancement updates are available for the system.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Available critical security updates</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.security.critical</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <description>Number of available and not yet installed critical security updates in enabled repositories</description>
+                    <applications>
+                        <application>
+                            <name>Available updates</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{nodata({$YUM_UPDATEINFO_MAXAGE})}=1</expression>
+                            <name>No new security update information received for more than {$YUM_UPDATEINFO_MAXAGE}</name>
+                            <priority>WARNING</priority>
+                            <description>yum-updateinfo.sh script did not run or failed to run within {$YUM_UPDATEINFO_MAXAGE}. Check if the script is working correctly and if a Systemd timer or cronjob is set up for it to run at expected intervals.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Known vulnerabilities</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.security.cves</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>The system or some software on the system is vulnerable to these known vulnerabilities. Check http://cve.mitre.org for detailed information about each vulnerability.</description>
+                    <applications>
+                        <application>
+                            <name>Security</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>DISCARD_UNCHANGED_HEARTBEAT</type>
+                            <parameters>
+                                <parameter>1d</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>Available important security updates</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.security.important</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <description>Number of available and not yet installed important security updates in enabled repositories</description>
+                    <applications>
+                        <application>
+                            <name>Available updates</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>New important security updates are available</name>
+                            <priority>AVERAGE</priority>
+                            <description>One or more important security updates are available for the system. Install them as soon as possibe.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Available low security updates</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.security.low</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <description>Number of available and not yet installed low security updates in enabled repositories</description>
+                    <applications>
+                        <application>
+                            <name>Available updates</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>New low risk security updates are available</name>
+                            <priority>INFO</priority>
+                            <description>One or more low risk security updates are available for the system.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Available moderate security updates</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.security.moderate</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <description>Number of available and not yet installed moderate security updates in enabled repositories</description>
+                    <applications>
+                        <application>
+                            <name>Available updates</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>New moderate risk security updates are available</name>
+                            <priority>WARNING</priority>
+                            <description>One or more moderate risk security updates are available for the system.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>List of available updates</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.updates</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>List of package updates available and not yet installed.</description>
+                    <applications>
+                        <application>
+                            <name>Available updates</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>DISCARD_UNCHANGED_HEARTBEAT</type>
+                            <parameters>
+                                <parameter>1d</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>Available package updates</name>
+                    <type>TRAP</type>
+                    <key>yum.updateinfo.updates.count</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <description>Number of available and not yet installed updates in enabled repositories</description>
+                    <applications>
+                        <application>
+                            <name>Available updates</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+            <macros>
+                <macro>
+                    <macro>{$YUM_UPDATEINFO_MAXAGE}</macro>
+                    <value>2d</value>
+                    <description>Max age of available security updates information</description>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+    <triggers>
+        <trigger>
+            <expression>{Template Module YUM updateinfo by Zabbix trapper:yum.updateinfo.security.critical.last()}&gt;0 and {Template Module YUM updateinfo by Zabbix trapper:yum.updateinfo.security.cves.strlen()}&gt;0</expression>
+            <name>New critical security updates are available</name>
+            <opdata>{ITEM.VALUE1}</opdata>
+            <priority>HIGH</priority>
+            <description>One or more critical security updates are available for the system. Install them as soon as possible.
+The system is known to be vulnerable to:
+{ITEM.VALUE2}</description>
+        </trigger>
+        <trigger>
+            <expression>{Template Module YUM updateinfo by Zabbix trapper:yum.updateinfo.updates.count.last()}&gt;0 and {Template Module YUM updateinfo by Zabbix trapper:yum.updateinfo.updates.strlen()}&gt;0</expression>
+            <name>New package updates are available</name>
+            <opdata>{ITEM.VALUE1}</opdata>
+            <priority>INFO</priority>
+            <description>One or more package updates are available for the system.
+Following packages can be updated:
+{ITEM.VALUE2}</description>
+        </trigger>
+    </triggers>
+    <graphs>
+        <graph>
+            <name>Available updates</name>
+            <yaxismax>0</yaxismax>
+            <show_work_period>NO</show_work_period>
+            <show_triggers>NO</show_triggers>
+            <type>PIE</type>
+            <graph_items>
+                <graph_item>
+                    <color>FF0000</color>
+                    <item>
+                        <host>Template Module YUM updateinfo by Zabbix trapper</host>
+                        <key>yum.updateinfo.security.critical</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>E64A19</color>
+                    <item>
+                        <host>Template Module YUM updateinfo by Zabbix trapper</host>
+                        <key>yum.updateinfo.security.important</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>FFB300</color>
+                    <item>
+                        <host>Template Module YUM updateinfo by Zabbix trapper</host>
+                        <key>yum.updateinfo.security.moderate</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>3</sortorder>
+                    <color>FFEB3B</color>
+                    <item>
+                        <host>Template Module YUM updateinfo by Zabbix trapper</host>
+                        <key>yum.updateinfo.security.low</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>4</sortorder>
+                    <color>7B1FA2</color>
+                    <item>
+                        <host>Template Module YUM updateinfo by Zabbix trapper</host>
+                        <key>yum.updateinfo.bugfixes</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>5</sortorder>
+                    <color>2E7D32</color>
+                    <item>
+                        <host>Template Module YUM updateinfo by Zabbix trapper</host>
+                        <key>yum.updateinfo.enhancement</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>
