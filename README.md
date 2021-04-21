@@ -32,7 +32,8 @@ On all hosts you want to monitor:
   systemctl start zabbix-template-module-yum-updateinfo.timer
   ```
 On Zabbix server:
-- Import the `template_module_yum_updateinfo.xml` template into Zabbix
+- Import the `template_module_yum_updateinfo.xml` template into Zabbix 4.2 or higher
+  or import `template_module_yum_updateinfo-4.0.xml` template into Zabbix 4.0 LTS.
 - Assign the template "Template Module YUM updateinfo by Zabbix trapper" to the host(s) you want to monitor
 
 ## Zabbix configuration
